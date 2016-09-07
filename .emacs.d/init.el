@@ -14,6 +14,7 @@
 (defvar local-packages '(projectile
                          helm
                          helm-swoop
+                         helm-projectile
                          undo-tree
                          epc
                          company-jedi
@@ -58,6 +59,8 @@
  my:el-get-packages
  '(el-get
    ecb
+   monky
+   ahg
    restclient))
 
 
