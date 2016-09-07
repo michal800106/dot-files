@@ -1,42 +1,19 @@
-;; (add-to-list 'load-path "~/.emacs.d/el-get/popup")
-;; (add-to-list 'load-path "~/.emacs.d/el-get/epc")
-;; (add-to-list 'load-path "~/.emacs.d/el-get/deferred")
-;; (add-to-list 'load-path "~/.emacs.d/el-get/ctable")
-;; (add-to-list 'load-path "~/.emacs.d/el-get/python-environment")
-;; (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 (setq temporary-file-directory "~/.emacs.d/tmp/")
 
 
-
-;; (unless (require 'el-get nil 'noerror)
-;;   (require 'package)
-;;   (add-to-list 'package-archives
-;;                '("melpa" . "http://melpa.org/packages/"))
-;;   (package-refresh-contents)
-;;   (package-initialize)
-;;   (package-install 'el-get)
-;;   (require 'el-get))
-;; 
-;; (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-;; (el-get 'sync)
-;; 
-
 ;; Settings
 (defvar settings-dir
-  (expand-file-name "settings" user-emacs-directory))
+  (expand-file-name "settings" "~/.emacs.d/"))
 (add-to-list 'load-path settings-dir)
 
 
 (require 'my-package)
-;; (require 'package)
-;;(package-initialize)
-;;(add-to-list 'package-archives
-;;	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (defvar local-packages '(projectile
                          helm
+                         helm-swoop
                          undo-tree
                          epc
                          company-jedi
@@ -64,17 +41,37 @@
       (dolist (p need-to-install)
 	(package-install p)))))
 
-;; (require 'ido)
-;; (ido-mode t)
+;; for latest versions of packages
+(require 'cl)				; common lisp goodies, loop
 
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil t)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://github.com/dimitri/el-get/raw/master/el-get-install.el")
+    (end-of-buffer)
+    (eval-print-last-sexp)))
+
+;; now set our own packages
+(setq
+ my:el-get-packages
+ '(el-get
+   ecb
+   restclient))
+
+
+(el-get 'sync my:el-get-packages)
+
+;; end of packaging
+
+;; BASIC CUSTOMIZATION
+;; --------------------------------------
 
 (global-ede-mode 1)
 (require 'semantic/sb)
 (semantic-mode 1)
 
-
-;; BASIC CUSTOMIZATION
-;; --------------------------------------
 
 (setq inhibit-startup-message t) ;; hide the startup message
 (load-theme 'material-light t) ;; load material theme
