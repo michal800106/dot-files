@@ -150,3 +150,4 @@
       helm-ff-file-name-history-use-recentf t)
 
 (helm-mode t)
+(setq ring-bell-function 'ignore)
