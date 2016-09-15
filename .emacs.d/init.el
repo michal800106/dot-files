@@ -25,7 +25,6 @@
                          py-isort
                          flycheck
                          recentf
-                         material-theme
                          py-autopep8))
 
 (defun uninstalled-packages (packages)
@@ -60,6 +59,7 @@
  '(el-get
    ecb
    monky
+   leuven-theme
    ahg
    restclient))
 
@@ -77,7 +77,7 @@
 
 
 (setq inhibit-startup-message t) ;; hide the startup message
-(load-theme 'material-light t) ;; load material theme
+(load-theme 'leuven t) ;; load material theme
 (global-linum-mode t) ;; enable line numbers globally
 
 (custom-set-variables
