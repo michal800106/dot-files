@@ -1,3 +1,10 @@
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 (setq temporary-file-directory "~/.emacs.d/tmp/")
@@ -57,11 +64,9 @@
 (setq
  my:el-get-packages
  '(el-get
-   ecb
    monky
    leuven-theme
-   ahg
-   restclient))
+   ahg))
 
 
 (el-get 'sync my:el-get-packages)
@@ -93,24 +98,37 @@
      (#("/srv/websites/backoffice" 0 24
         (help-echo "Mouse-2 toggles maximizing, mouse-3 displays a popup-menu"))
       "backoffice"))))
+ '(elpy-syntax-check-command "/home/michalz/tmp/py37/bin/flake8")
  '(enable-local-variables :all)
  '(inhibit-startup-screen t)
- '(python-shell-interpreter "python")
+ '(jedi:environment-virtualenv (quote py37))
+ '(jedi:server-command
+   (quote
+    ("/home/michalz/.emacs.d/.python-environments/py37/bin/jediepcserver")))
+ '(org-confirm-babel-evaluate nil)
+ '(org-log-done (quote note))
+ '(org-src-fontify-natively t)
+ '(org-src-tab-acts-natively t)
+ '(package-selected-packages
+   (quote
+    (mpdel dante flycheck-mypy flow-minor-mode web-mode isortify kubernetes magit magit-popup vdiff-magit string-inflection anaconda-mode company-anaconda jedi-core helm helm-ack helm-ag helm-bbdb helm-company helm-directory helm-dired-history helm-flycheck helm-git helm-ispell helm-ls-git helm-pydoc toml-mode blacken ensime scala-mode scad-mode scad-preview adoc-mode mustache mustache-mode esh-autosuggest eshell-git-prompt eshell-up eshell-z fish-completion markdownfmt mkdown vmd-mode company-go go-guru go-impl go-imports go-mode go-projectile gorepl-mode govet rats hlint-refactor haskell-snippets yasnippet yasnippet-snippets intero helm-systemd systemd ob-http ob-rust ob-restclient mmm-mode company-edbi edbi-database-url edbi-sqlite edbi edbi-minor-mode emacsql emacsql-psql format-sql copy-as-format anything-tramp helm-tramp ssh ssh-agency ssh-config-mode ssh-deploy ssh-tunnels company-eshell-autosuggest company-ghci company-shell company-restclient auctex auctex-latexmk auctex-lua slack flyspell-correct-helm wcheck-mode docker docker-compose-mode docker-tramp dockerfile-mode company-distel company-erlang distel-completion-lib edts erlang flycheck-rebar3 ivy-erlang-complete lfe-mode markdown-mode markdown-mode+ markdown-preview-mode markdown-toc synosaurus company-lua lua-mode luarocks websocket enotify jabber browse-at-remote python json-mode tern js2-refactor js2-mode py-autopep8 flycheck py-isort better-defaults company-quickhelp company-jedi epc undo-tree helm-swoop helm-projectile)))
+ '(python-shell-interpreter "/home/michalz/tmp/py37/bin/python")
  '(whitespace-line-column 120))
 
-(require 'ecb)
 (setq stack-trace-on-error t) ;;don’t popup Backtrace window
-(setq ecb-tip-of-the-day nil)
-(setq ecb-auto-activate t)
-;;(setq ecb-layout-name "left6")
-
 
 
 (savehist-mode t)
 
 (require 'my_javascript)
 (require 'my_python)
+(require 'my_ansible)
 (require 'my_grep)
+(require 'my_dired_tree)
+(require 'my_auctex)
+
+(require 'flycheck-swagger-tools)
+(require 'openapi-yaml-mode)
 
 (add-to-list 'company-backends 'company-dabbrev t)
 
@@ -151,3 +169,30 @@
 
 (helm-mode t)
 (setq ring-bell-function 'ignore)
+(put 'upcase-region 'disabled nil)
+
+;;(set-default-font "lucidasanstypewriter-10")
+
+(setq frame-title-format
+   (list (format "%s %%S: %%j " (system-name))
+      '(buffer-file-name "%f" (dired-directory dired-directory "%b")))) 
+
+(setq neo-smart-open t)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(windmove-default-keybindings)
+(load "server")
+(unless (server-running-p) (server-start))
+
+(winner-mode)
+
+(set-default-font "DejaVu Sans Mono:style=Book:pixelsize=12")
+;; (set-default-font "terminus:pixelsize=12")
+
+(require 'mpdel)
+(mpdel-mode)

@@ -1,0 +1,1 @@
+setenv FZF_DEFAULT_OPTS ''

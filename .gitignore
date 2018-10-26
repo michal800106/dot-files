@@ -1,0 +1,11 @@
+.emacs.d/#recentf#
+.emacs.d/recentf
+.emacs.d/auto-save-list
+.emacs.d/backups/
+.emacs.d/ede-projects.el
+.emacs.d/el-get/
+.emacs.d/elpa
+.emacs.d/history
+.emacs.d/projectile-bookmarks.eld
+**.swp
+.config/fish/fishd.*

@@ -13,9 +13,9 @@
 ;; enable autopep8 formatting on save
 (require 'py-autopep8)
 
-(setq elpy-rpc-python-command "python3")
-(setq python-check-command "flake8")
-(setq flycheck-python-flake8-executable "flake8")
+(setq elpy-rpc-python-command "/home/michalz/tmp/py37/bin/python")
+(setq python-check-command "/home/michalz/tmp/py37/bin/flake8")
+(setq flycheck-python-flake8-executable "/home/michalz/tmp/py37/bin/flake8")
 ;; (elpy-use-ipython "python3")
 
 ;Global Jedi config vars
@@ -27,7 +27,7 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
 (defvar jedi-config:with-virtualenv nil
   "Set to non-nil to point to a particular virtualenv.")
 
-(defvar jedi-config:vcs-root-sentinel ".hg")
+(defvar jedi-config:vcs-root-sentinel ".git")
 
 (defvar jedi-config:python-module-sentinel "__init__.py")
 
@@ -111,10 +111,13 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
             (if (file-exists-p file-file)
                 (dir-list-to-path current)
               (try-find-best-root nil (cdr buffer-dir) next-dir))))
-
          (t nil)))
 
-      (let* ((buffer-dir (expand-file-name (file-name-directory (buffer-file-name buf))))
+      (let* ((my-buffer-file (buffer-file-name buf))
+             (my-buffer-dir (and (bound-and-true-p my-buffer-file)
+                                 (expand-file-name my-buffer-file)))
+             (buffer-dir (expand-file-name (or (bound-and-true-p my-buffer-dir)
+                                               (bound-and-true-p default-directory))))
              (vc-root-dir (vc-find-root buffer-dir repo-file)))
         (if (and init-file vc-root-dir)
             (try-find-best-root
@@ -190,7 +193,18 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
     (company-quickhelp-mode 1)
     ;; Use custom keybinds
     (add-hook 'python-mode-hook 'jedi-config:setup-keys)
-    
+
+    (add-hook 'python-mode-hook 'blacken-mode)
+    (add-hook 'python-mode-hook 'isortify-mode)
+
+    (add-hook 'python-mode-hook
+              (lambda ()
+                (progn
+                  (setq whitespace-line-column 120)
+                  ;; (setq whitespace-style '(face lines-tail))
+                  (whitespace-mode t))))
+
+    (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
     (add-to-list 'company-backends 'company-jedi)
 
     ))
